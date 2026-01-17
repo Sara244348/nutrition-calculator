@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النتائج النهائية - حاسبة الحصص الغذائية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #be7cdc 0%, #8c49c0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeInDown 0.5s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #040406;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.6s ease;
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            color: #06080f;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #05070c;
+        }
+
+        .servings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .serving-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-right: 4px solid #8c49c0;
+            transition: all 0.3s ease;
+        }
+
+        .serving-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .serving-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .serving-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .serving-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #080a14;
+            margin-bottom: 5px;
+        }
+
+        .serving-unit {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .serving-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .serving-details p {
+            margin: 5px 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-right: 4px solid #8c49c0;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .highlight-box h3 {
+            color: #140b06;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .highlight-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .highlight-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .highlight-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .highlight-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0e0804;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+
+        .summary-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 700;
+        }
+
+        .summary-table td {
+            background: white;
+        }
+
+        .summary-table tr:nth-child(even) td {
+            background: #f8f9fa;
+        }
+
+        .total-row {
+            background: #e3f2fd !important;
+            font-weight: 700;
+            color: #1565c0;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-right: 4px solid #4caf50;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .info-box h4 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .info-box p {
+            color: #1b5e20;
+            line-height: 1.8;
+            margin: 10px 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .buttons {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header, .results-section {
+                padding: 25px 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .servings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-table {
+                font-size: 0.85rem;
+            }
+
+            .summary-table th,
+            .summary-table td {
+                padding: 10px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 البرنامج الغذائي الكامل</h1>
+            <p class="subtitle">أخصائية التغذية عبير الغول</p>
+        </div>
+
+        <div class="results-section" id="results-content">
+            <!-- سيتم ملء المحتوى بواسطة JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const milkTypeNames = {
+            full: 'حليب كامل الدسم',
+            low: 'حليب منخفض الدسم',
+            skim: 'حليب خالي الدسم'
+        };
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const resultsContent = document.getElementById('results-content');
+            
+            try {
+                const savedData = localStorage.getItem('nutritionData');
+                
+                if (!savedData || !JSON.parse(savedData).step2) {
+                    resultsContent.innerHTML = `
+                        <div style="text-align: center; padding: 60px 20px;">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">⚠️</div>
+                            <h2 style="color: #667eea; margin-bottom: 20px;">لا توجد بيانات كاملة</h2>
+                            <p style="color: #666; margin-bottom: 30px;">يرجى إكمال جميع الخطوات أولاً</p>
+                            <a href="step1.html" class="btn btn-primary">البدء من جديد</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const data = JSON.parse(savedData);
+                const step2 = data.step2;
+
+                // حساب الإجماليات
+                const totalProtein = step2.milk.protein + step2.fruits.protein + step2.vegetables.protein + step2.starch.protein;
+                const totalFat = step2.milk.fat + step2.fruits.fat + step2.vegetables.fat + step2.starch.fat;
+                const totalCalories = step2.milk.calories + step2.fruits.calories + step2.vegetables.calories + step2.starch.calories;
+
+                resultsContent.innerHTML = `
+                    <h2 class="section-title">🍽️ حصص الطعام اليومية</h2>
+                    
+                    <div class="servings-grid">
+                        <div class="serving-card">
+                            <div class="serving-icon">🥛</div>
+                            <div class="serving-title">${milkTypeNames[step2.milk.type]}</div>
+                            <div class="serving-number">${step2.milk.servings}</div>
+                            <div class="serving-unit">كوب</div>
+                            <div class="serving-details">
+                                <p>🔸 ${step2.milk.carbs} جرام كربوهيدرات</p>
+                                <p>🔸 ${step2.milk.protein} جرام بروتين</p>
+                                <p>🔸 ${step2.milk.fat} جرام دهون</p>
+                                <p>🔸 ${step2.milk.calories} سعرة حرارية</p>
+                            </div>
+                        </div>
+
+                        <div class="serving-card">
+                            <div class="serving-icon">🍎</div>
+                            <div class="serving-title">الفواكه</div>
+                            <div class="serving-number">${step2.fruits.servings}</div>
+                            <div class="serving-unit">حصة</div>
+                            <div class="serving-details">
+                                <p>🔸 ${step2.fruits.carbs} جرام كربوهيدرات</p>
+                                <p>🔸 ${step2.fruits.protein} جرام بروتين</p>
+                                <p>🔸 ${step2.fruits.fat} جرام دهون</p>
+                                <p>🔸 ${step2.fruits.calories} سعرة حرارية</p>
+                            </div>
+                        </div>
+
+                        <div class="serving-card">
+                            <div class="serving-icon">🥗</div>
+                            <div class="serving-title">الخضروات</div>
+                            <div class="serving-number">${step2.vegetables.servings}</div>
+                            <div class="serving-unit">حصة</div>
+                            <div class="serving-details">
+                                <p>🔸 ${step2.vegetables.carbs} جرام كربوهيدرات</p>
+                                <p>🔸 ${step2.vegetables.protein} جرام بروتين</p>
+                                <p>🔸 ${step2.vegetables.fat} جرام دهون</p>
+                                <p>🔸 ${step2.vegetables.calories} سعرة حرارية</p>
+                            </div>
+                        </div>
+
+                        <div class="serving-card">
+                            <div class="serving-icon">🍞</div>
+                            <div class="serving-title">النشويات (الخبز والحبوب)</div>
+                            <div class="serving-number">${step2.starch.servings}</div>
+                            <div class="serving-unit">حصة</div>
+                            <div class="serving-details">
+                                <p>🔸 ${Math.round(step2.starch.carbs)} جرام كربوهيدرات</p>
+                                <p>🔸 ${Math.round(step2.starch.protein)} جرام بروتين</p>
+                                <p>🔸 ${Math.round(step2.starch.fat * 10) / 10} جرام دهون</p>
+                                <p>🔸 ${Math.round(step2.starch.calories)} سعرة حرارية</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h3>🎯 حصص النشويات المتبقية</h3>
+                        <div class="highlight-content">
+                            <div class="highlight-item">
+                                <div class="highlight-label">الكربوهيدرات الكلية</div>
+                                <div class="highlight-value">${data.results.carbs} جرام</div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-label">المستخدم (حليب + فواكه + خضار)</div>
+                                <div class="highlight-value">${Math.round(step2.usedCarbs)} جرام</div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-label">المتبقي للنشويات</div>
+                                <div class="highlight-value">${Math.round(step2.remainingCarbs)} جرام</div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-label">عدد حصص النشويات</div>
+                                <div class="highlight-value">${step2.starch.servings}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title">📊 جدول المغذيات التفصيلي</h2>
+                    
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>المجموعة الغذائية</th>
+                                <th>الحصص</th>
+                                <th>كربوهيدرات (جرام)</th>
+                                <th>بروتين (جرام)</th>
+                                <th>دهون (جرام)</th>
+                                <th>سعرات حرارية</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🥛 ${milkTypeNames[step2.milk.type]}</td>
+                                <td>${step2.milk.servings}</td>
+                                <td>${step2.milk.carbs}</td>
+                                <td>${step2.milk.protein}</td>
+                                <td>${step2.milk.fat}</td>
+                                <td>${step2.milk.calories}</td>
+                            </tr>
+                            <tr>
+                                <td>🍎 الفواكه</td>
+                                <td>${step2.fruits.servings}</td>
+                                <td>${step2.fruits.carbs}</td>
+                                <td>${step2.fruits.protein}</td>
+                                <td>${step2.fruits.fat}</td>
+                                <td>${step2.fruits.calories}</td>
+                            </tr>
+                            <tr>
+                                <td>🥗 الخضروات</td>
+                                <td>${step2.vegetables.servings}</td>
+                                <td>${step2.vegetables.carbs}</td>
+                                <td>${step2.vegetables.protein}</td>
+                                <td>${step2.vegetables.fat}</td>
+                                <td>${step2.vegetables.calories}</td>
+                            </tr>
+                            <tr>
+                                <td>🍞 النشويات</td>
+                                <td>${step2.starch.servings}</td>
+                                <td>${Math.round(step2.starch.carbs)}</td>
+                                <td>${Math.round(step2.starch.protein)}</td>
+                                <td>${Math.round(step2.starch.fat * 10) / 10}</td>
+                                <td>${Math.round(step2.starch.calories)}</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>الإجمالي</strong></td>
+                                <td>-</td>
+                                <td><strong>${data.results.carbs}</strong></td>
+                                <td><strong>${Math.round(totalProtein)}</strong></td>
+                                <td><strong>${Math.round(totalFat * 10) / 10}</strong></td>
+                                <td><strong>${Math.round(totalCalories)}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                   
+
+                    <div class="buttons">
+                        <a href="Untitled-1.html" class="btn btn-secondary">📝 حساب جديد</a>
+                        <a href="step2.html" class="btn btn-secondary">← تعديل الحصص</a>
+                        <button onclick="window.print()" class="btn btn-primary">🖨️ طباعة البرنامج</button>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultsContent.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">❌</div>
+                        <h2 style="color: #667eea; margin-bottom: 20px;">حدث خطأ</h2>
+                        <p style="color: #666; margin-bottom: 30px;">لم نتمكن من تحميل البيانات. الرجاء المحاولة مرة أخرى.</p>
+                        <a href="step1.html" class="btn btn-primary">البدء من جديد</a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
