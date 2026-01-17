@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أخصائية  التغذية عبير الغول </title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg,  #be7cdc 0%, #8c49c0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #040007;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        a{
+            text-decoration: none;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .unit {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 0.95rem;
+        }
+
+        input.has-unit {
+            padding-left: 60px;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #8c49c0 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+            margin-top: 10px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        .showmore-btn {
+            width: 50%;
+            padding: 18px;
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #8c49c0 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+            margin-top: 10px;
+            margin-right: 25%;
+            
+        }
+
+        .showmore-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .showmore-btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results h2 {
+            text-align: center;
+            color: #8c49c0;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #8c49c0;
+        }
+
+        .result-unit {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍽️أخصائية التغذية عبير الغول </h1>
+
+        <form id="macroForm">
+            <div class="form-group">
+                <label for="calories"> Total Kcal</label>
+                <div class="input-group">
+                    <input type="number" id="calories" class="has-unit" min="0" step="1" required>
+                    <span class="unit">Kcal</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="carbs-percent">%CHO </label>
+                <div class="input-group">
+                    <input type="number" id="carbs-percent" class="has-unit" min="0" max="100" step="1" required>
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="protein-percent">%Protein </label>
+                <div class="input-group">
+                    <input type="number" id="protein-percent" class="has-unit" min="0" max="100" step="1" required>
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fat-percent">%Fat </label>
+                <div class="input-group">
+                    <input type="number" id="fat-percent" class="has-unit" min="0" max="100" step="1" required>
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Count </button>
+        </form>
+
+        <div id="results" class="results">
+            <h2> Result in gram </h2>
+            <div class="result-grid">
+                <div class="result-card">
+                    <div class="result-label">Total CHO</div>
+                    <div class="result-value" id="carbs-result">0</div>
+                    <div class="result-unit">gm</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-label">Total protein</div>
+                    <div class="result-value" id="protein-result">0</div>
+                    <div class="result-unit">gm</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-label">Total Fat</div>
+                    <div class="result-value" id="fat-result">0</div>
+                    <div class="result-unit">gm</div>
+                </div>
+            </div>
+        </div>
+         <a  href="step2.html"  class="showmore-btn">Show More</a>
+    </div>
+
+    <script>
+        // تحميل القيم المحفوظة عند فتح الصفحة
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedData = localStorage.getItem('nutritionData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                // تحميل المدخلات
+                if (data.inputs) {
+                    document.getElementById('calories').value = data.inputs.calories || '';
+                    document.getElementById('carbs-percent').value = data.inputs.carbsPercent || '';
+                    document.getElementById('protein-percent').value = data.inputs.proteinPercent || '';
+                    document.getElementById('fat-percent').value = data.inputs.fatPercent || '';
+                }
+                
+                // تحميل النتائج إذا كانت موجودة
+                if (data.results) {
+                    document.getElementById('carbs-result').textContent = data.results.carbs;
+                    document.getElementById('protein-result').textContent = data.results.protein;
+                    document.getElementById('fat-result').textContent = data.results.fat;
+                    document.getElementById('results').classList.add('show');
+                }
+            }
+        });
+
+        document.getElementById('macroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // الحصول على القيم المدخلة
+            const totalCalories = parseFloat(document.getElementById('calories').value);
+            const carbsPercent = parseFloat(document.getElementById('carbs-percent').value);
+            const proteinPercent = parseFloat(document.getElementById('protein-percent').value);
+            const fatPercent = parseFloat(document.getElementById('fat-percent').value);
+
+            // التحقق من أن مجموع النسب = 100%
+            const totalPercent = carbsPercent + proteinPercent + fatPercent;
+            if (Math.abs(totalPercent - 100) > 0.1) {
+                alert('⚠️ مجموع النسب يجب أن يساوي 100%\nالمجموع الحالي: ' + totalPercent.toFixed(1) + '%');
+                return;
+            }
+
+            // حساب السعرات لكل مغذي
+            const carbsCalories = (totalCalories * carbsPercent) / 100;
+            const proteinCalories = (totalCalories * proteinPercent) / 100;
+            const fatCalories = (totalCalories * fatPercent) / 100;
+
+            // تحويل السعرات إلى جرامات
+            // الكربوهيدرات: 1 جرام = 4 سعرات
+            const carbsGrams = Math.round(carbsCalories / 4);
+            
+            // البروتين: 1 جرام = 4 سعرات
+            const proteinGrams = Math.round(proteinCalories / 4);
+            
+            // الدهون: 1 جرام = 9 سعرات
+            const fatGrams = Math.round(fatCalories / 9);
+
+            // عرض النتائج
+            document.getElementById('carbs-result').textContent = carbsGrams;
+            document.getElementById('protein-result').textContent = proteinGrams;
+            document.getElementById('fat-result').textContent = fatGrams;
+
+            // حفظ البيانات في localStorage
+            const dataToSave = {
+                inputs: {
+                    calories: totalCalories,
+                    carbsPercent: carbsPercent,
+                    proteinPercent: proteinPercent,
+                    fatPercent: fatPercent
+                },
+                results: {
+                    carbs: carbsGrams,
+                    protein: proteinGrams,
+                    fat: fatGrams
+                },
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('nutritionData', JSON.stringify(dataToSave));
+
+            // إظهار قسم النتائج
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.classList.add('show');
+
+            // التمرير إلى النتائج
+            setTimeout(() => {
+                resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        });
+
+        // التحقق من مجموع النسب أثناء الكتابة
+        const percentInputs = ['carbs-percent', 'protein-percent', 'fat-percent'];
+        percentInputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', function() {
+                const carbs = parseFloat(document.getElementById('carbs-percent').value) || 0;
+                const protein = parseFloat(document.getElementById('protein-percent').value) || 0;
+                const fat = parseFloat(document.getElementById('fat-percent').value) || 0;
+                const total = carbs + protein + fat;
+                
+                // تغيير لون الحقول بناءً على المجموع
+                percentInputs.forEach(inputId => {
+                    const input = document.getElementById(inputId);
+                    if (total > 100) {
+                        input.style.borderColor = '#ff6b6b';
+                    } else if (total === 100) {
+                        input.style.borderColor = '#51cf66';
+                    } else {
+                        input.style.borderColor = '#e0e0e0';
+                    }
+                });
+            });
+        });
+       
+    </script>
+</body>
+</html>
